@@ -1,45 +1,91 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jesda-si <jesda-si@student.42.rio>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/02 17:19:18 by jesda-si          #+#    #+#             */
+/*   Updated: 2024/12/02 17:37:53 by jesda-si         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
-void	push(t_list **a, t_list **b)
+t_list	*create_list(char **matriz)
 {
-	t_list	*tmp;
+	int		i;
+	int		*content;
+	t_list	*lst;
+	t_list	*new;
 
-	if (!a || !*b)
-		return ;
-	tmp = *b;
-	*b = (*b)->next;
-	tmp->next = (*a);
-	*a = tmp;
+	if (!check_only_digits(matriz))
+		return (NULL);
+	lst = NULL;
+	new = NULL;
+	i = -1;
+	while (matriz[++i])
+	{
+		content = create_content(matriz[i]);
+		if (!content)
+			return (lstclear(&lst));
+		new = ft_lstnew((void *)content);
+		if (!new)
+			return (lstclear(&lst));
+		ft_lstadd_back(&lst, new);
+	}
+	return (lst);
 }
 
-void	reverse(t_list **lst)
+int	*create_content(char *s)
 {
-	t_list	*last;
-	t_list	*tmp;
-	size_t	len;
+	long	*content;
 
-	len = ft_lstsize(*lst);
-	if (len < 2)
-		return ;
-	last = ft_lstlast(*lst);
-	last->next = *lst;
-	*lst = last;
-	tmp = *lst;
-	while (tmp->next != last)
-		tmp = tmp->next;
-	tmp->next = NULL;
+	content = malloc(sizeof(int));
+	if (!content)
+		return (NULL);
+	*content = ft_atol(s);
+	if (*content < MIN_INT || *content > MAX_INT)
+	{
+		free(content);
+		return (NULL);
+	}
+	return ((int *)content);
 }
 
-void	rotate(t_list **lst)
+int	check_only_digits(char **matriz)
 {
-	t_list	*last;
+	int		i;
+	int		j;
 
-	if (!*lst && !(*lst)->next)
-		return ;
-	last = ft_lstlast(*lst);
-	last->next = *lst;
-	*lst = (*lst)->next;
-	(last->next)->next = NULL;
+	i = -1;
+	while (matriz[++i])
+	{
+		j = -1;
+		while (matriz[i][++j])
+		{
+			if (!ft_isdigit(matriz[i][j]) && matriz[i][j] != '-')
+				return (0);
+		}
+	}
+	i = -1;
+	while (matriz[++i])
+	{
+		j = i + 1;
+		while (matriz[j])
+		{
+			if (!ft_strncmp(matriz[i], matriz[j], ft_strlen(matriz[i]) + 1))
+				return (0);
+			j++;
+		}
+	}
+	return (1);
+}
+
+void	*lstclear(t_list **lst)
+{
+	ft_lstclear(lst, free);
+	return (NULL);
 }
 
 void	putlst(t_list *lst)
@@ -52,74 +98,3 @@ void	putlst(t_list *lst)
 		lst = lst->next;
 	}
 }
-
-t_list	*create_list(char **matriz)
-{
-	int	i;
-	int	*content;
-	t_list	*lst;
-	t_list	*new;
-
-	if (!verify_matriz(matriz))
-	{
-		ft_printf("Error\n");
-		return (NULL);
-	}
-	lst = NULL;
-	new = NULL;
-	i = 0;
-	while (matriz[i])
-	{
-		content = malloc(sizeof(int));
-		if (!content)
-		{
-			ft_lstclear(&lst, free);
-			return (NULL);
-		}
-		*content = ft_atoi(matriz[i]);
-		new = ft_lstnew((void *)content);
-		if (!new)
-		{
-			ft_lstclear(&lst, free);
-			return (NULL);
-		}
-		ft_lstadd_back(&lst, new);
-		i++;
-	}
-	return (lst);
-}
-
-int	verify_matriz(char **matriz)
-{
-	int	i;
-	int	j;
-	char	*s;
-
-	i = 0;
-	while (matriz[i])
-	{
-		s = matriz[i];
-		j = 0;
-		while (s[j])
-		{
-			if (!ft_isdigit(s[j]) && s[j] != '-')
-				return (0);
-			j++;
-		}
-		i++;
-	}
-	i = 0;
-	while (matriz[i])
-	{
-		j = i + 1;
-		while (matriz[j])
-		{
-			if (!ft_strncmp(matriz[i], matriz[j], ft_strlen(matriz[i]) + 1))
-				return (0);
-			j++;
-		}
-		i++;
-	}
-	return (1);
-}
-
