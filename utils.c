@@ -6,7 +6,7 @@
 /*   By: jesda-si <jesda-si@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 17:19:18 by jesda-si          #+#    #+#             */
-/*   Updated: 2024/12/02 17:37:53 by jesda-si         ###   ########.fr       */
+/*   Updated: 2024/12/02 20:19:35 by jesda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_list	*create_list(char **matriz)
 	t_list	*lst;
 	t_list	*new;
 
-	if (!check_only_digits(matriz))
+	if (!matriz || !check_only_digits(matriz))
 		return (NULL);
 	lst = NULL;
 	new = NULL;
@@ -41,16 +41,37 @@ int	*create_content(char *s)
 {
 	long	*content;
 
-	content = malloc(sizeof(int));
+	if (!s || !*s)
+		return (NULL);
+	content = malloc(sizeof(long));
 	if (!content)
 		return (NULL);
 	*content = ft_atol(s);
-	if (*content < MIN_INT || *content > MAX_INT)
+	if ((*content < MIN_INT || *content > MAX_INT)
+		|| (!*content && ft_strncmp(s, "0", 2)))
 	{
 		free(content);
 		return (NULL);
 	}
 	return ((int *)content);
+}
+
+int	check_duplicates(t_list *lst)
+{
+	t_list	*tmp;
+
+	while (lst)
+	{
+		tmp = lst->next;
+		while (tmp)
+		{
+			if (*(int *)lst->content == *(int *)tmp->content)
+				return (0);
+			tmp = tmp->next;
+		}
+		lst = lst->next;
+	}
+	return (1);
 }
 
 int	check_only_digits(char **matriz)
@@ -64,19 +85,9 @@ int	check_only_digits(char **matriz)
 		j = -1;
 		while (matriz[i][++j])
 		{
-			if (!ft_isdigit(matriz[i][j]) && matriz[i][j] != '-')
+			if (!ft_isdigit(matriz[i][j])
+				&& matriz[i][j] != '-' && matriz[i][j] != '+')
 				return (0);
-		}
-	}
-	i = -1;
-	while (matriz[++i])
-	{
-		j = i + 1;
-		while (matriz[j])
-		{
-			if (!ft_strncmp(matriz[i], matriz[j], ft_strlen(matriz[i]) + 1))
-				return (0);
-			j++;
 		}
 	}
 	return (1);
