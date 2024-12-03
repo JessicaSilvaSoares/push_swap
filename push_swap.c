@@ -6,7 +6,7 @@
 /*   By: jesda-si <jesda-si@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 17:19:06 by jesda-si          #+#    #+#             */
-/*   Updated: 2024/12/02 20:19:08 by jesda-si         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:18:20 by jesda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,15 @@
 char	*join_args(char **matriz);
 char	*ft_join(char const *s1, char const *s2);
 void	*free_matriz(char **matriz);
+void	sort_list(t_list **lst_a);
+int     check_order(t_list *lst);
 
 int	main(int argc, char **argv)
 {
 	char	**matriz;
 	char	*tmp;
-	t_list	*lst_a;
+	t_list	*lst;
+	size_t	len;
 
 	//t_list	*lst_b;
 	if (argc < 2)
@@ -33,15 +36,58 @@ int	main(int argc, char **argv)
 	free(tmp);
 	if (!matriz)
 		return (0);
-	lst_a = create_list(matriz);
+	lst = create_list(matriz);
 	matriz = free_matriz(matriz);
-	if (!lst_a || !check_duplicates(lst_a))
+	if (!lst || !check_duplicates(lst))
+	{
 		ft_printf("Error\n");
-	else
-		putlst(lst_a);
-	// (void *)lst_b;
-	ft_lstclear(&lst_a, free);
+		return (0);
+	}
+	len = ft_lstsize(lst);
+	putlst(lst);
+	ft_printf("|\n|\n");
+	sort_list(&lst);
+	putlst(lst);
+	ft_lstclear(&lst, free);
 	return (0);
+}
+
+void	sort_list(t_list **lst_a)
+{
+	size_t	len;
+	//t_list	*lst_b;
+	t_list	*tmp;
+
+	len = ft_lstsize(*lst_a);
+	if (len < 2)
+		return ;
+	if (check_order(*lst_a))
+		return ;
+
+	if (len == 2)
+	{
+		tmp = (*lst_a)->next;
+		if (*(int *)(*lst_a)->content > *(int *)tmp->content)
+		{
+			swap(lst_a);
+			ft_printf("sa\n");
+			return ;
+		}
+	}
+}
+
+int	check_order(t_list *lst)
+{
+	t_list	*tmp;
+
+	while (lst->next)
+	{
+		tmp = lst->next;
+		if (*(int *)lst->content > *(int *)tmp->content)
+			return (0);
+		lst = lst->next;
+	}
+	return (1);
 }
 
 void	*free_matriz(char **matriz)
