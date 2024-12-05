@@ -11,6 +11,7 @@ $(NAME): $(OBJS)
 	@ cp lib/libft.a .
 	@ mv libft.a $(NAME)
 	@ ar -rcs $(NAME) $(OBJS)
+	@ cc -Wall -Wextra -Werror push_swap.a -o push_swap
 
 .c.o:
 	@ cc -Wall -Wextra -Werror -c $< -o $@
@@ -21,6 +22,7 @@ clean:
 
 fclean: clean
 	@ rm -f $(NAME)
+	@ rm -f push_swap
 	@ make fclean -C lib
 
 re: fclean all

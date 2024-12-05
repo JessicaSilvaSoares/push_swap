@@ -6,14 +6,14 @@
 /*   By: jesda-si <jesda-si@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 17:19:06 by jesda-si          #+#    #+#             */
-/*   Updated: 2024/12/03 18:18:20 by jesda-si         ###   ########.fr       */
+/*   Updated: 2024/12/04 18:12:14 by jesda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
 char	*join_args(char **matriz);
-char	*ft_join(char const *s1, char const *s2);
+char	*ft_join(char *s1, char const *s2);
 void	*free_matriz(char **matriz);
 void	sort_list(t_list **lst_a);
 int     check_order(t_list *lst);
@@ -106,27 +106,23 @@ void	*free_matriz(char **matriz)
 char	*join_args(char **args)
 {
 	char	*str;
-	char	*tmp;
 	int		i;
 
 	if (!args || !*args)
 		return (NULL);
 	str = ft_strdup(args[0]);
-	tmp = NULL;
 	i = 1;
 	while (args[i])
 	{
-		tmp = ft_join(str, args[i]);
-		if (!tmp)
+		str = ft_join(str, args[i]);
+		if (!str)
 			return (NULL);
-		free(str);
-		str = tmp;
 		i++;
 	}
 	return (str);
 }
 
-char	*ft_join(char const *s1, char const *s2)
+char	*ft_join(char *s1, char const *s2)
 {
 	int		len;
 	char	*str;
@@ -140,5 +136,6 @@ char	*ft_join(char const *s1, char const *s2)
 	ft_strlcpy(str, s1, len);
 	ft_strlcat(str, " ", len);
 	ft_strlcat(str, s2, len);
+	free(s1);
 	return (str);
 }

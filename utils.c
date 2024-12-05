@@ -6,7 +6,7 @@
 /*   By: jesda-si <jesda-si@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 17:19:18 by jesda-si          #+#    #+#             */
-/*   Updated: 2024/12/02 20:19:35 by jesda-si         ###   ########.fr       */
+/*   Updated: 2024/12/04 18:34:56 by jesda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,10 @@ int	check_only_digits(char **matriz)
 		j = -1;
 		while (matriz[i][++j])
 		{
-			if (!ft_isdigit(matriz[i][j])
+			if ((matriz[i][j] == '-' || matriz[i][j] == '+')
+				&& (j > 0 && !ft_isspace(matriz[i][j - 1])))
+				return (0);
+			else if (!ft_isdigit(matriz[i][j])
 				&& matriz[i][j] != '-' && matriz[i][j] != '+')
 				return (0);
 		}
