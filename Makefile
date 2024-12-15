@@ -1,6 +1,8 @@
-NAME = push_swap.a
+NAME = push_swap
 
-SRC = push_swap.c operations.c utils.c
+LIB = libft.a
+
+SRC = push_swap.c operations.c utils.c sort.c
 
 OBJS := $(SRC:%.c=%.o)
 
@@ -8,10 +10,8 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@ make -C lib
-	@ cp lib/libft.a .
-	@ mv libft.a $(NAME)
-	@ ar -rcs $(NAME) $(OBJS)
-	@ cc -Wall -Wextra -Werror push_swap.a -o push_swap
+	@ cp lib/$(LIB) .
+	@ cc -Wall -Wextra -Werror $(OBJS) $(LIB) -o $(NAME)
 
 .c.o:
 	@ cc -Wall -Wextra -Werror -c $< -o $@
@@ -21,7 +21,7 @@ clean:
 	@ make clean -C lib
 
 fclean: clean
-	@ rm -f $(NAME)
+	@ rm -f $(LIB)
 	@ rm -f push_swap
 	@ make fclean -C lib
 
