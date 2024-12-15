@@ -35,5 +35,7 @@ t_list	*create_list(char **matriz);
 int		*create_content(char *s);
 int		check_only_digits(char **matriz);
 int		check_duplicates(t_list *lst);
+int		check_order(t_list *lst, int rev);
+void	reverse_list(t_list **lst_a, t_list **lst_b);
 
 #endif

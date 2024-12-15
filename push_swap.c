@@ -16,7 +16,6 @@ char	*join_args(char **matriz);
 char	*ft_join(char *s1, char const *s2);
 void	*free_matriz(char **matriz);
 void	sort_list(t_list **lst_a);
-int     check_order(t_list *lst);
 
 int	main(int argc, char **argv)
 {
@@ -25,7 +24,6 @@ int	main(int argc, char **argv)
 	t_list	*lst;
 	size_t	len;
 
-	//t_list	*lst_b;
 	if (argc < 2)
 	{
 		ft_printf("\n");
@@ -52,38 +50,16 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
-void	sort_list(t_list **lst_a)
-{
-	size_t	len;
-	//t_list	*lst_b;
-	t_list	*tmp;
-
-	len = ft_lstsize(*lst_a);
-	if (len < 2)
-		return ;
-	if (check_order(*lst_a))
-		return ;
-
-	if (len == 2)
-	{
-		tmp = (*lst_a)->next;
-		if (*(int *)(*lst_a)->content > *(int *)tmp->content)
-		{
-			swap(lst_a);
-			ft_printf("sa\n");
-			return ;
-		}
-	}
-}
-
-int	check_order(t_list *lst)
+int	check_order(t_list *lst, int rev)
 {
 	t_list	*tmp;
 
 	while (lst->next)
 	{
 		tmp = lst->next;
-		if (*(int *)lst->content > *(int *)tmp->content)
+		if (!rev && *(int *)lst->content > *(int *)tmp->content)
+			return (0);
+		if (rev && *(int *)lst->content < *(int *)tmp->content)
 			return (0);
 		lst = lst->next;
 	}
