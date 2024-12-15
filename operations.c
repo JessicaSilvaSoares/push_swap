@@ -21,12 +21,12 @@ void	push(t_list **a, t_list **b)
 {
 	t_list	*tmp;
 
-	if (!a || !*b)
+	if (!*a || !b)
 		return ;
-	tmp = *b;
-	*b = (*b)->next;
-	tmp->next = (*a);
-	*a = tmp;
+	tmp = *a;
+	*a = (*a)->next;
+	tmp->next = (*b);
+	*b = tmp;
 }
 
 void	reverse(t_list **lst)
