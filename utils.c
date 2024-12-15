@@ -108,7 +108,8 @@ void	putlst(t_list *lst)
 		return ;
 	while (lst)
 	{
-		ft_printf("%d\n", *(int *)lst->content);
+		ft_printf("%d, ", *(int *)lst->content);
 		lst = lst->next;
 	}
+	ft_printf("\n");
 }
