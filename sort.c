@@ -45,7 +45,7 @@ void	sort3(t_list **lst_a, t_list **lst_b)
 {
 	push_min_b(lst_a, lst_b);
 	swap(lst_a, lst_b, 0);
-	push(lst_b, lst_a, 0);
+	push(lst_a, lst_b, 0);
 }
 
 void	sort_small(t_list **lst_a, t_list **lst_b)
@@ -66,24 +66,22 @@ void	push_min_b(t_list **lst_a, t_list **lst_b)
 	t_list	*min;
 
 	tmp = *lst_a;
-	min = tmp;
-	while (tmp->next)
+	min = *lst_a;
+	while (tmp)
 	{
 		if (*(int *)min->content > *(int *)tmp->content)
 			min = tmp;
 		tmp = tmp->next;
 	}
-	tmp = *lst_a;
-	while (tmp->next)
+	while ((*lst_a)->next)
 	{
-		tmp = *lst_a;
-		if (tmp == min)
+		if ((*lst_a) == min)
 		{
-			push(lst_a, lst_b, 1);
+			push(lst_a, lst_b, STACK_B);
 			break ;
 		}
 		else
-			rotate(lst_a, lst_b, 0);
+			rotate(lst_a, lst_b, STACK_A);
 	}
 }
 
@@ -96,10 +94,10 @@ void	reverse_list(t_list **lst_a, t_list **lst_b)
 {
 	while (ft_lstsize(*lst_a) > 2)
 	{
-		reverse(lst_a, lst_b, 0);
-		push(lst_a, lst_b, 1);
+		reverse(lst_a, lst_b, STACK_A);
+		push(lst_a, lst_b, STACK_B);
 	}
-	swap(lst_a, lst_b, 0);
+	swap(lst_a, lst_b, STACK_A);
 	while (ft_lstsize(*lst_b) > 0)
-		push(lst_a, lst_b, 1);
+		push(lst_a, lst_b, STACK_A);
 }
