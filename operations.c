@@ -12,34 +12,57 @@
 
 #include "push_swap.h"
 
-void	print_operation(unsigned int operation, unsigned int stack)
-{
-	const char	***opt = {{"sa", "sb", "ss"}, {"pa", "pb"},
-	{"ra", "rb", "rr"}, {"rra", "rrb", "rrr"}};
+void	rot_list(t_list **lst);
 
-	ft_printf("%s\n", opt[operation][stack]);
-}
+void	print_operation(int operation, int stack_a, int stack_b);
+void	rev_list(t_list **lst);
+int		cmp_swap(t_list *lst);
 
 void	swap(t_list **lst_a, t_list **lst_b, int stack)
 {
-	if (stack > 2)
+	int		count_a;
+	int		count_b;
+
+	if (stack > STACK_AB)
 		return ;
 	if (stack == STACK_AB && !(ft_lstsize(*lst_a) > 1
 			&& ft_lstsize(*lst_b) > 1))
 		return ;
-	if (*lst_a && (stack == STACK_A || stack == STACK_AB))
+	count_a = 0;
+	count_b = 0;
+	if (*lst_a && (stack == STACK_A || stack == STACK_AB) && cmp_swap(*lst_a))
+	{
 		ft_lstswap(lst_a);
-	if (*lst_b && (stack == STACK_B || stack == STACK_AB))
+		count_a++;
+	}
+	if (*lst_b && (stack == STACK_B || stack == STACK_AB) && cmp_swap(*lst_b))
+	{
 		ft_lstswap(lst_b);
-	print_operation(OP_SWAP, stack);
+		count_b++;
+	}
+	print_operation(OP_SWAP, count_a, count_b);
 }
 
-void	push(t_list **a, t_list **b, unsigned int stack)
+int	cmp_swap(t_list *lst)
 {
 	t_list	*tmp;
 
-	if (stack > 1)
+	tmp = (lst)->next;
+	if (*(int *)lst->content <= *(int *)tmp->content)
+		return (0);
+	return (1);
+}
+
+void	push(t_list **a, t_list **b, int stack)
+{
+	t_list	*tmp;
+	int		count_a;
+	int		count_b;
+
+	if (stack > STACK_B)
 		return ;
+	count_a = 0;
+	count_b = 0;
 	if (stack == STACK_A)
 	{
 		if (!a || !*b)
@@ -48,6 +71,7 @@ void	push(t_list **a, t_list **b, unsigned int stack)
 		*b = (*b)->next;
 		tmp->next = (*a);
 		*a = tmp;
+		count_a++;
 	}
 	else if (stack == STACK_B)
 	{
@@ -57,22 +81,34 @@ void	push(t_list **a, t_list **b, unsigned int stack)
 		*a = (*a)->next;
 		tmp->next = (*b);
 		*b = tmp;
+		count_b++;
 	}
-	print_operation(OP_SWAP, stack);
+	print_operation(OP_SWAP, count_a, count_b);
 }
 
-void	reverse(t_list **lst_a, t_list **b, unsigned int stack)
+void	reverse(t_list **lst_a, t_list **lst_b, int stack)
 {
-	if (stack > 2)
+	int		count_a;
+	int		count_b;
+
+	if (stack > STACK_AB)
 		return ;
 	if (stack == STACK_AB && !(ft_lstsize(*lst_a) > 1
 			&& ft_lstsize(*lst_b) > 1))
 		return ;
+	count_a = 0;
+	count_b = 0;
 	if (ft_lstsize(*lst_a) > 1 && (stack == STACK_A || stack == STACK_AB))
+	{
 		rev_list(lst_a);
+		count_a++;
+	}
 	if (ft_lstsize(*lst_b) > 1 && (stack == STACK_B || stack == STACK_AB))
+	{
 		rev_list(lst_b);
-	print_operation(OP_REVERSE, stack);
+		count_b++;
+	}
+	print_operation(OP_REVERSE, count_a, count_b);
 }
 
 void	rev_list(t_list **lst)
@@ -89,18 +125,29 @@ void	rev_list(t_list **lst)
 	tmp->next = NULL;
 }
 
-void	rotate(t_list **lst_a, t_list **lst_b, unsigned int stack)
+void	rotate(t_list **lst_a, t_list **lst_b, int stack)
 {
-	if (stack > 2)
-		break ;
+	int		count_a;
+	int		count_b;
+
+	if (stack > STACK_AB)
+		return ;
 	if (stack == STACK_AB && !(ft_lstsize(*lst_a) > 1
 			&& ft_lstsize(*lst_b) > 1))
 		return ;
+	count_a = 0;
+	count_b = 0;
 	if (ft_lstsize(*lst_a) > 1 && (stack == STACK_A || stack == STACK_AB))
+	{
 		rot_list(lst_a);
+		count_a++;
+	}
 	if (ft_lstsize(*lst_b) > 1 && (stack == STACK_A || stack == STACK_AB))
+	{
 		rot_list(lst_b);
-	print_operation(OP_ROTATE, stack);
+		count_b++;
+	}
+	print_operation(OP_ROTATE, count_a, count_b);
 }
 
 void	rot_list(t_list **lst)
@@ -111,4 +158,17 @@ void	rot_list(t_list **lst)
 	last->next = *lst;
 	*lst = (*lst)->next;
 	(last->next)->next = NULL;
+}
+
+void	print_operation(int operation, int stack_a, int stack_b)
+{
+	const char	*opt[4][3] = {{"sa", "sb", "ss"}, {"pa", "pb"},
+	{"ra", "rb", "rr"}, {"rra", "rrb", "rrr"}};
+
+	if (stack_a && stack_b)
+		ft_printf("%s\n", opt[operation][STACK_AB]);
+	else if (stack_a)
+		ft_printf("%s\n", opt[operation][STACK_A]);
+	else if (stack_b)
+		ft_printf("%s\n", opt[operation][STACK_B]);
 }

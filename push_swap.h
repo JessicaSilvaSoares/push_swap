@@ -24,11 +24,32 @@
 # ifndef MAX_INT
 #  define MAX_INT 2147483648
 # endif
+# ifndef STACK_A
+#  define STACK_A 0
+# endif
+# ifndef STACK_B
+#  define STACK_B 1
+# endif
+# ifndef STACK_AB
+#  define STACK_AB 2
+# endif
+# ifndef OP_SWAP
+#  define OP_SWAP 0
+# endif
+# ifndef OP_PUSH
+#  define OP_PUSH 1
+# endif
+# ifndef OP_ROTATE
+#  define OP_ROTATE 2
+# endif
+# ifndef OP_REVERSE
+#  define OP_REVERSE 3
+# endif
 
-void	swap(t_list **lst);
-void	push(t_list **a, t_list **b);
-void	reverse(t_list **lst);
-void	rotate(t_list **lst);
+void	swap(t_list **lst_a, t_list **lst_b, int stack);
+void	push(t_list **lst_a, t_list **lst_b, int stack);
+void	reverse(t_list **lst_a, t_list **lst_b, int stack);
+void	rotate(t_list **lst_a, t_list **lst_b, int stack);
 void	putlst(t_list *lst);
 void	*lstclear(t_list **lst);
 t_list	*create_list(char **matriz);

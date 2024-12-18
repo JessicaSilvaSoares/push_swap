@@ -45,6 +45,8 @@ int	main(int argc, char **argv)
 	putlst(lst);
 	ft_printf("|\n|\n");
 	sort_list(&lst);
+	if (!check_order(lst, 0))
+		ft_printf("Error!");
 	putlst(lst);
 	ft_lstclear(&lst, free);
 	return (0);
