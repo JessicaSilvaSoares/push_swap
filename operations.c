@@ -6,7 +6,7 @@
 /*   By: jesda-si <jesda-si@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 17:51:28 by jesda-si          #+#    #+#             */
-/*   Updated: 2024/12/02 17:51:29 by jesda-si         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:33:37 by jesda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@ void	swap(t_list **lst_a, t_list **lst_b, int stack)
 		return ;
 	count_a = 0;
 	count_b = 0;
-	if ((stack == STACK_A || stack == STACK_AB) && cmp_swap(lst_a)
-		&& ft_lstsize(*lst_a) > 1)
+	if ((stack == STACK_A || stack == STACK_AB) && ft_lstsize(*lst_a) > 1
+		&& cmp_swap(lst_a))
 	{
 		ft_lstswap(lst_a);
 		count_a++;
 	}
 
-	if ((stack == STACK_B || stack == STACK_AB) && cmp_swap(lst_b)
-		&& ft_lstsize(*lst_b) > 1)
+	if ((stack == STACK_B || stack == STACK_AB) && ft_lstsize(*lst_b) > 1
+		&& cmp_swap(lst_b))
 	{
 		ft_lstswap(lst_b);
 		count_b++;
@@ -178,3 +178,4 @@ void	print_operation(int operation, int stack_a, int stack_b)
 	else if (stack_b)
 		ft_printf("%s\n", opt[operation][STACK_B]);
 }
+
