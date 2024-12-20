@@ -22,7 +22,6 @@ int	main(int argc, char **argv)
 	char	**matriz;
 	char	*tmp;
 	t_list	*lst;
-	size_t	len;
 
 	if (argc < 2)
 	{
@@ -41,13 +40,10 @@ int	main(int argc, char **argv)
 		ft_printf("Error\n");
 		return (0);
 	}
-	len = ft_lstsize(lst);
-	// putlst(lst);
-	// ft_printf("|\n|\n");
 	sort_list(&lst);
 	if (!check_order(lst, 0))
 		ft_printf("Error\n");
-	putlst(lst);
+	//putlst(lst);
 	ft_lstclear(&lst, free);
 	return (0);
 }
